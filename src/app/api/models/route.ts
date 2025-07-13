@@ -3,7 +3,7 @@ import { ChatService } from '@/services/ChatService';
 
 export const runtime = 'edge';
 
-export async function GET(_req: NextRequest) {
+export async function GET() {
   try {
     const availableModels = ChatService.getAvailableModels();
     

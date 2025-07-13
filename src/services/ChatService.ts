@@ -15,7 +15,7 @@ export class ChatService {
       throw new Error(`${modelName} API is not configured properly`);
     }
     
-    const messages = [...history, { role: 'user', content: prompt }];
+    const messages: ChatMessage[] = [...history, { role: 'user' as const, content: prompt }];
     return await adapter.generateCompletion(messages, stream);
   }
   
@@ -31,13 +31,9 @@ export class ChatService {
       throw new Error(`${modelName} API is not configured properly`);
     }
     
-    const relatedQuestionsPrompt = `基于这个问题："${prompt}"，请生成2个相关的后续问题，这些问题应该：
-1. 与原问题相关但从不同角度深入
-2. 能够帮助用户更深入地理解这个话题
-3. 简洁明了，易于理解
-请只返回问题列表，不要其他说明文字。`;
+    const relatedQuestionsPrompt = `基于这个问题："${prompt}"，请生成2个相关的后续问题，这些问题应该：\n1. 与原问题相关但从不同角度深入\n2. 能够帮助用户更深入地理解这个话题\n3. 简洁明了，易于理解\n请只返回问题列表，不要其他说明文字。`;
 
-    const messages = [...history, { role: 'user', content: relatedQuestionsPrompt }];
+    const messages: ChatMessage[] = [...history, { role: 'user' as const, content: relatedQuestionsPrompt }];
     return await adapter.generateRelatedQuestions(messages);
   }
   

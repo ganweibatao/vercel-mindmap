@@ -68,7 +68,7 @@ export async function POST(req: NextRequest) {
       throw error; // 重新抛出其他错误
     }
 
-  } catch (error) {
+  } catch (error: unknown) {
     console.error('Error from AI service:', error);
     return new Response('Error from upstream AI service', { status: 500 });
   }
