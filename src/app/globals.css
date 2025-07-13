@@ -1,0 +1,181 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+  /* 当前 ReactFlow 视口缩放倍数，默认为 1 */
+  --flow-scale: 1;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+}
+
+/* 触摸优化样式 */
+.react-flow__container {
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+
+.react-flow__viewport {
+  will-change: transform;
+}
+
+/* ReactFlow 节点样式覆盖 */
+.react-flow__node {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+}
+
+/* 覆盖所有节点状态的样式 */
+.react-flow__node.selected,
+.react-flow__node.selectable,
+.react-flow__node.draggable,
+.react-flow__node:hover,
+.react-flow__node:focus {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+/* ReactFlow 边线样式 - 让连接线更粗 */
+.react-flow__edge-path {
+  stroke-width: 2px !important; /* 增加连接线粗细 */
+  stroke: #64748b !important; /* 设置连接线颜色 */
+}
+
+/* 边线在选中和悬停状态下的样式 */
+.react-flow__edge.selected .react-flow__edge-path,
+.react-flow__edge:hover .react-flow__edge-path {
+  stroke-width: 4px !important; /* 选中或悬停时更粗 */
+  stroke: #3b82f6 !important; /* 蓝色 */
+}
+
+/* 边线箭头样式 */
+.react-flow__edgemarker {
+  fill: #64748b !important;
+}
+
+.react-flow__edge.selected .react-flow__edgemarker,
+.react-flow__edge:hover .react-flow__edgemarker {
+  fill: #3b82f6 !important;
+}
+
+/* 修改Markdown分割线样式，用空行代替分割线 */
+.prose hr {
+  border: none !important;
+  background: none !important;
+  height: 1em !important; /* 创建空行的效果，减少高度 */
+  margin: 0.5em 0 !important; /* 也减少上下间距 */
+}
+
+/* 优化ReactFlow缩放时的字体渲染 */
+.react-flow__viewport {
+  -webkit-font-smoothing: antialiased !important;
+  -moz-osx-font-smoothing: grayscale !important;
+  text-rendering: optimizeLegibility !important;
+  image-rendering: -webkit-optimize-contrast !important;
+  image-rendering: crisp-edges !important;
+}
+
+/* 优化节点缩放时的字体渲染，防止模糊 */
+.markdown-node {
+  -webkit-font-smoothing: antialiased !important;
+  -moz-osx-font-smoothing: grayscale !important;
+  text-rendering: optimizeLegibility !important;
+  font-feature-settings: "kern" 1 !important;
+  transform-origin: center center !important;
+  backface-visibility: hidden !important;
+  will-change: transform !important;
+  image-rendering: -webkit-optimize-contrast !important;
+  image-rendering: crisp-edges !important;
+}
+
+/* 确保prose内容在缩放时保持清晰 */
+.prose {
+  -webkit-font-smoothing: antialiased !important;
+  -moz-osx-font-smoothing: grayscale !important;
+  text-rendering: optimizeLegibility !important;
+  transform: translateZ(0) !important; /* 强制硬件加速 */
+  image-rendering: -webkit-optimize-contrast !important;
+  image-rendering: crisp-edges !important;
+}
+
+/* 优化整个节点在缩放时的渲染 */
+.markdown-node-wrapper {
+  transform: translateZ(0) !important; /* 强制硬件加速 */
+  -webkit-transform: translateZ(0) !important;
+  image-rendering: -webkit-optimize-contrast !important;
+  image-rendering: crisp-edges !important;
+}
+
+/* 针对所有文本元素的优化 */
+.markdown-node * {
+  -webkit-font-smoothing: antialiased !important;
+  -moz-osx-font-smoothing: grayscale !important;
+  text-rendering: optimizeLegibility !important;
+}
+
+/* 优化移动端触摸体验 */
+@media (max-width: 768px) {
+  .react-flow__controls {
+    bottom: 20px;
+    right: 20px;
+  }
+  
+  .react-flow__minimap {
+    bottom: 20px;
+    left: 20px;
+  }
+}
+
+/* 确保深色节点中的文字为白色，提高可读性 */
+.markdown-node,
+.markdown-node .prose,
+.markdown-node .prose * {
+  color: #ffffff !important;
+}
+
+/* 强制覆盖代码块样式为深色主题 */
+.markdown-node pre,
+.markdown-node .mdx-content pre {
+  background: #1e1e1e !important;
+  border: 1px solid #444 !important;
+}
+
+.markdown-node pre code,
+.markdown-node .mdx-content pre code,
+.markdown-node .hljs,
+.markdown-node .mdx-content .hljs {
+  background: #1e1e1e !important;
+  color: #d4d4d4 !important;
+}
+
+/* 内联代码样式强制覆盖 */
+.markdown-node code:not(.hljs),
+.markdown-node .mdx-content code:not(.hljs) {
+  background: rgba(255, 255, 255, 0.1) !important;
+  color: #e6e6e6 !important;
+}
