@@ -14,6 +14,8 @@ import {
   useReactFlow,
   ReactFlowProvider,
   BackgroundVariant,
+  NodeChange,
+  Connection,
 } from '@xyflow/react';
 import MarkdownNode from './MarkdownNode';
 import InputNode from './InputNode';
@@ -275,7 +277,6 @@ function MindMapFlow() {
   const [edges, setEdges, onEdgesChange] = useEdgesState(createInitialEdges());
   const [question, setQuestion] = useState('');
   const [withWebSearch, setWithWebSearch] = useState(false);
-  const [withDeepThink, setWithDeepThink] = useState(false);
   const [selectedModel, setSelectedModel] = useState<'deepseek' | 'wenxin'>('deepseek');
   // 全局对话历史，供发送给后端做上下文
   const [chatHistory, setChatHistory] = useState<Message[]>([]);
@@ -300,7 +301,7 @@ function MindMapFlow() {
   }, [edges, orientation, setNodes]);
 
   // 包装 onNodesChange，增加布局触发逻辑
-  const onNodesChangeWithLayout = useCallback((changes: any[]) => {
+  const onNodesChangeWithLayout = useCallback((changes: NodeChange[]) => {
     onNodesChange(changes);
     // 检查是否有节点尺寸变化事件
     const hasDimensionChange = changes.some(change => change.type === 'dimensions');
@@ -443,7 +444,7 @@ function MindMapFlow() {
   };
 
   const onConnect = useCallback(
-    (params: any) => setEdges((eds) => addEdge(params, eds)),
+    (params: Connection) => setEdges((eds) => addEdge(params, eds)),
     [setEdges],
   );
 
@@ -993,7 +994,7 @@ function MindMapFlow() {
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
-      handleInitialSubmit(e as any);
+      handleInitialSubmit(e as FormEvent);
     }
   };
 
@@ -1029,13 +1030,14 @@ function MindMapFlow() {
     const measureTarget = (contentBox as HTMLElement) || (nodeElement as HTMLElement | null);
     
     let nodeWidth = 600;
-    let nodeHeight = 200;
+    // 移除未使用的变量
+    // let nodeHeight = 200;
     
     if (measureTarget) {
       const rect = measureTarget.getBoundingClientRect();
       const scale = getViewportScale();
       nodeWidth = Math.max(rect.width / scale, 600);
-      nodeHeight = Math.max(rect.height / scale, 200);
+      // nodeHeight = Math.max(rect.height / scale, 200);
     }
     
     const viewportHeight = window.innerHeight;
@@ -1063,7 +1065,7 @@ function MindMapFlow() {
   // 当布局方向改变时，重新布局现有节点
   useEffect(() => {
     relayout();
-  }, [orientation]);
+  }, [orientation, relayout]);
 
   return (
     <MindMapContext.Provider value={{ 

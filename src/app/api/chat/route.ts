@@ -4,6 +4,16 @@ import { ChatMessage } from '@/services/models/ModelAdapter';
 
 export const runtime = 'edge';
 
+interface ChatRequest {
+  prompt: string;
+  history?: Array<{
+    role: string;
+    content: string;
+  }>;
+  getRelatedQuestions?: boolean;
+  model?: string;
+}
+
 export async function POST(req: NextRequest) {
   try {
     // 解析请求参数
@@ -12,7 +22,7 @@ export async function POST(req: NextRequest) {
       history = [], 
       getRelatedQuestions = false, 
       model = 'deepseek' 
-    } = await req.json();
+    }: ChatRequest = await req.json();
 
     // 验证必要参数
     if (!prompt) {
@@ -20,8 +30,8 @@ export async function POST(req: NextRequest) {
     }
 
     // 将历史记录转换为标准格式
-    const chatHistory: ChatMessage[] = history.map((msg: any) => ({
-      role: msg.role,
+    const chatHistory: ChatMessage[] = history.map((msg) => ({
+      role: msg.role as 'user' | 'assistant' | 'system',
       content: msg.content
     }));
 
@@ -50,9 +60,9 @@ export async function POST(req: NextRequest) {
       
       return response;
       
-    } catch (error: any) {
+    } catch (error: unknown) {
       // 处理特定错误
-      if (error.message.includes('not configured')) {
+      if (error instanceof Error && error.message.includes('not configured')) {
         return new Response(error.message, { status: 400 });
       }
       throw error; // 重新抛出其他错误
