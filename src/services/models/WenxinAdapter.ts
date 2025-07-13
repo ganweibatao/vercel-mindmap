@@ -49,7 +49,7 @@ export class WenxinAdapter implements ModelAdapter {
   }
   
   // 将OpenAI格式消息转换为文心一言格式
-  private convertMessages(messages: ChatMessage[]): any[] {
+  private convertMessages(messages: ChatMessage[]): Array<{role: string; content: string}> {
     return messages.map(msg => ({
       role: msg.role === 'assistant' ? 'assistant' : 'user',
       content: msg.content
@@ -119,7 +119,7 @@ export class WenxinAdapter implements ModelAdapter {
                   if (text) {
                     controller.enqueue(encoder.encode(text));
                   }
-                } catch (e) {
+                } catch {
                   // 忽略解析错误
                 }
               }

@@ -18,10 +18,17 @@ interface MDXRendererProps {
   className?: string;
 }
 
+interface ComponentProps {
+  children?: React.ReactNode;
+  className?: string;
+  href?: string;
+  [key: string]: unknown;
+}
+
 // 自定义组件映射
 const components = {
   // 代码块增强
-  code: ({ children, className, ...props }: any) => {
+  code: ({ children, className, ...props }: ComponentProps) => {
     const isInline = !className;
     if (isInline) {
       return (
@@ -49,7 +56,7 @@ const components = {
   },
   
   // 表格增强
-  table: ({ children, ...props }: any) => (
+  table: ({ children, ...props }: ComponentProps) => (
     <div style={{ overflowX: 'auto', margin: '1em 0' }}>
       <table 
         style={{ 
@@ -64,7 +71,7 @@ const components = {
     </div>
   ),
   
-  th: ({ children, ...props }: any) => (
+  th: ({ children, ...props }: ComponentProps) => (
     <th 
       style={{ 
         border: '1px solid #ddd', 
@@ -79,7 +86,7 @@ const components = {
     </th>
   ),
   
-  td: ({ children, ...props }: any) => (
+  td: ({ children, ...props }: ComponentProps) => (
     <td 
       style={{ 
         border: '1px solid #ddd', 
@@ -92,7 +99,7 @@ const components = {
   ),
 
   // 引用块增强
-  blockquote: ({ children, ...props }: any) => (
+  blockquote: ({ children, ...props }: ComponentProps) => (
     <blockquote 
       style={{ 
         borderLeft: '4px solid #ddd', 
@@ -109,7 +116,7 @@ const components = {
   ),
 
   // 链接增强
-  a: ({ children, href, ...props }: any) => (
+  a: ({ children, href, ...props }: ComponentProps) => (
     <a 
       href={href}
       style={{ color: '#0066cc', textDecoration: 'underline' }}
@@ -122,32 +129,32 @@ const components = {
   ),
 
   // 列表增强
-  ul: ({ children, ...props }: any) => (
+  ul: ({ children, ...props }: ComponentProps) => (
     <ul style={{ paddingLeft: '1.5em', margin: '0.5em 0' }} {...props}>
       {children}
     </ul>
   ),
   
-  ol: ({ children, ...props }: any) => (
+  ol: ({ children, ...props }: ComponentProps) => (
     <ol style={{ paddingLeft: '1.5em', margin: '0.5em 0' }} {...props}>
       {children}
     </ol>
   ),
 
   // 标题增强
-  h1: ({ children, ...props }: any) => (
+  h1: ({ children, ...props }: ComponentProps) => (
     <h1 style={{ fontSize: '1.8em', fontWeight: 'bold', margin: '1em 0 0.5em 0' }} {...props}>
       {children}
     </h1>
   ),
   
-  h2: ({ children, ...props }: any) => (
+  h2: ({ children, ...props }: ComponentProps) => (
     <h2 style={{ fontSize: '1.5em', fontWeight: 'bold', margin: '1em 0 0.5em 0' }} {...props}>
       {children}
     </h2>
   ),
   
-  h3: ({ children, ...props }: any) => (
+  h3: ({ children, ...props }: ComponentProps) => (
     <h3 style={{ fontSize: '1.3em', fontWeight: 'bold', margin: '1em 0 0.5em 0' }} {...props}>
       {children}
     </h3>
