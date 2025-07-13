@@ -679,7 +679,7 @@ function MindMapFlow() {
     };
     
     read();
-  }, [nodes, edges, setNodes, setEdges, relayout, getZoom, setCenter, orientation, chatHistory]);
+  }, [nodes, edges, setNodes, setEdges, relayout, getZoom, setCenter, orientation, chatHistory, selectedModel]);
 
   const handleSubmit = async (event: FormEvent, question: string, nodeIdToReplace: string, parentNodeId: string, withWebSearch?: boolean) => {
     event.preventDefault();

@@ -9,6 +9,7 @@ import remarkGfm from 'remark-gfm';
 import rehypeHighlight from 'rehype-highlight';
 import remarkBreaks from 'remark-breaks';
 import remarkEmoji from 'remark-emoji';
+import type { Components } from 'react-markdown';
 import 'katex/dist/katex.min.css';
 import 'highlight.js/styles/vs2015.css';
 import '../styles/mdx.css';
@@ -18,17 +19,10 @@ interface MDXRendererProps {
   className?: string;
 }
 
-interface ComponentProps {
-  children?: React.ReactNode;
-  className?: string;
-  href?: string;
-  [key: string]: unknown;
-}
-
 // 自定义组件映射
-const components = {
+const components: Components = {
   // 代码块增强
-  code: ({ children, className, ...props }: ComponentProps) => {
+  code: ({ children, className, ...props }) => {
     const isInline = !className;
     if (isInline) {
       return (
@@ -56,7 +50,7 @@ const components = {
   },
   
   // 表格增强
-  table: ({ children, ...props }: ComponentProps) => (
+  table: ({ children, ...props }) => (
     <div style={{ overflowX: 'auto', margin: '1em 0' }}>
       <table 
         style={{ 
@@ -71,7 +65,7 @@ const components = {
     </div>
   ),
   
-  th: ({ children, ...props }: ComponentProps) => (
+  th: ({ children, ...props }) => (
     <th 
       style={{ 
         border: '1px solid #ddd', 
@@ -86,7 +80,7 @@ const components = {
     </th>
   ),
   
-  td: ({ children, ...props }: ComponentProps) => (
+  td: ({ children, ...props }) => (
     <td 
       style={{ 
         border: '1px solid #ddd', 
@@ -99,7 +93,7 @@ const components = {
   ),
 
   // 引用块增强
-  blockquote: ({ children, ...props }: ComponentProps) => (
+  blockquote: ({ children, ...props }) => (
     <blockquote 
       style={{ 
         borderLeft: '4px solid #ddd', 
@@ -116,7 +110,7 @@ const components = {
   ),
 
   // 链接增强
-  a: ({ children, href, ...props }: ComponentProps) => (
+  a: ({ children, href, ...props }) => (
     <a 
       href={href}
       style={{ color: '#0066cc', textDecoration: 'underline' }}
@@ -129,32 +123,32 @@ const components = {
   ),
 
   // 列表增强
-  ul: ({ children, ...props }: ComponentProps) => (
+  ul: ({ children, ...props }) => (
     <ul style={{ paddingLeft: '1.5em', margin: '0.5em 0' }} {...props}>
       {children}
     </ul>
   ),
   
-  ol: ({ children, ...props }: ComponentProps) => (
+  ol: ({ children, ...props }) => (
     <ol style={{ paddingLeft: '1.5em', margin: '0.5em 0' }} {...props}>
       {children}
     </ol>
   ),
 
   // 标题增强
-  h1: ({ children, ...props }: ComponentProps) => (
+  h1: ({ children, ...props }) => (
     <h1 style={{ fontSize: '1.8em', fontWeight: 'bold', margin: '1em 0 0.5em 0' }} {...props}>
       {children}
     </h1>
   ),
   
-  h2: ({ children, ...props }: ComponentProps) => (
+  h2: ({ children, ...props }) => (
     <h2 style={{ fontSize: '1.5em', fontWeight: 'bold', margin: '1em 0 0.5em 0' }} {...props}>
       {children}
     </h2>
   ),
   
-  h3: ({ children, ...props }: ComponentProps) => (
+  h3: ({ children, ...props }) => (
     <h3 style={{ fontSize: '1.3em', fontWeight: 'bold', margin: '1em 0 0.5em 0' }} {...props}>
       {children}
     </h3>
